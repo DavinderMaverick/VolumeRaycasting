@@ -13,3 +13,10 @@ Esc -> Quit
 
 Mouse Click and Drag -> Rotate View  
 Mouse Scroll Wheel -> Zoom In/Out  
+
+## Project Dependencies
+1. opengl  
+2. glad  
+3. glfw  
+4. glm  
+5. stb  
