@@ -848,6 +848,17 @@ GLuint computeTransferFunction(vector<TransferFunctionControlPoint> colorKnots, 
 	//glGenerateMipmap(GL_TEXTURE_2D);
 	glTexImage1D(GL_TEXTURE_1D, 0, GL_RGBA, 256, 0, GL_RGBA, GL_FLOAT, &transferFunc[0].x);
 
+	unsigned char* imageData = (unsigned char *)malloc((int)(256 * 10 * (4)));
+	glGetTexImage(GL_TEXTURE_1D, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
+
+	for (int i = 1; i < 10; i++)
+	{
+		copy(imageData, imageData + 256 * 4, (imageData + i * (256 * 4)));
+	}
+	
+	stbi_write_png("transfer.png", 256, 10, 4, imageData, 0);
+	delete imageData;
+
 	return textureID;
 }
 
