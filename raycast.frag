@@ -13,6 +13,7 @@ uniform sampler2D back_face;
 //Actual Volume data
 uniform sampler3D volumeTex;
 uniform sampler1D transferFuncTex;
+uniform sampler2D noiseTex;
 
 // A very simple color transfer function
 /*
@@ -42,8 +43,9 @@ void main()
     float ray_length = length(ray);
     vec3 step_vector = step_length * ray / ray_length;
 
-	float random = fract(sin(gl_FragCoord.x * 12.9898 + gl_FragCoord.y * 78.233) * 43758.5453);
-
+	//32 X 32 Size of noise Texture
+	float random = texture(noiseTex, gl_FragCoord.xy / vec2(32, 32)).x; 
+	
 	ray_start += step_vector * random;
 
     vec3 position = ray_start;

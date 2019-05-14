@@ -4,6 +4,7 @@
 #include <vector>
 #include <math.h>
 #include <fstream>
+#include <ctime>
 
 #include <glad\glad.h>
 #include <GLFW\glfw3.h>
@@ -60,6 +61,7 @@ bool fileExists(string fileName);
 ostream& operator<<(ostream& out, const glm::vec3 &v);
 istream& operator>>(istream& in, glm::vec3 &v);
 void readGradientsFromFile();
+GLuint GenerateNoiseTexture();
 
 //settings
 const unsigned int SCR_WIDTH = 800;
@@ -144,6 +146,8 @@ int main()
 	//Load Volume Texture from File
 	GLuint volumeTex = GenerateVolumeTexture();
 	GLuint gradientTexture = loadGradientTexture();
+
+	GLuint noiseTex = GenerateNoiseTexture();
 
 	cubeTransform.rotQuat = glm::quat(0.0f, 0.0f, 0.0f, 1.0f);
 
@@ -332,7 +336,7 @@ int main()
 		//Render to display
 		//Render to the screen, to render to the screen. Use 0 as the second parameter of glBindFramebuffer
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		glClearColor(0.01f, 0.01f, 0.01f, 1.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		//glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
@@ -379,11 +383,15 @@ int main()
 		glBindTexture(GL_TEXTURE_1D, transferFuncTexture);
 		glUniform1i(glGetUniformLocation(currentRaycastShader->ID, "transferFuncTex"), 3);
 
+		glActiveTexture(GL_TEXTURE4);
+		glBindTexture(GL_TEXTURE_2D, noiseTex);
+		glUniform1i(glGetUniformLocation(currentRaycastShader->ID, "noiseTex"), 4);
+
 		if (currentShaderIndex == 2)
 		{
-			glActiveTexture(GL_TEXTURE4);
+			glActiveTexture(GL_TEXTURE5);
 			glBindTexture(GL_TEXTURE_3D, gradientTexture);
-			glUniform1i(glGetUniformLocation(currentRaycastShader->ID, "gradientTex"), 4);
+			glUniform1i(glGetUniformLocation(currentRaycastShader->ID, "gradientTex"), 5);
 		}
 
 		//Draw Scene
@@ -798,6 +806,32 @@ GLuint setUpEmptyTexture()
 	return textureID;
 }
 
+//Stochastic Jittering Noise Texture
+GLuint GenerateNoiseTexture()
+{
+	GLuint noiseTex;
+	int size = 32;
+	unsigned char* buffer = new unsigned char[size*size];
+	srand((unsigned)time(NULL));
+	for (int i = 0; i < (size*size); i++)
+		buffer[i] = 255.*rand() / (float)RAND_MAX;
+	glGenTextures(1, &noiseTex);
+	glBindTexture(GL_TEXTURE_2D, noiseTex);
+	glTexImage2D(
+		GL_TEXTURE_2D, // target
+		0, // level
+		GL_RED, // internal
+		size, // width
+		size, // height
+		0, GL_RED, GL_UNSIGNED_BYTE, buffer);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	delete buffer;
+
+	return noiseTex;
+}
 
 GLuint computeTransferFunction(vector<TransferFunctionControlPoint> colorKnots, vector<TransferFunctionControlPoint> alphaKnots)
 {
