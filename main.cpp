@@ -289,7 +289,7 @@ int main()
 
 	
 	int max_dim = max(XDIM, max(YDIM, ZDIM));
-
+	max_dim *= 2; //We have to take two samples per voxel to avoid sampling Wood-grain artifacts.
 	float step_length = 1.0f / max_dim;
 
 	//render loop
@@ -332,7 +332,7 @@ int main()
 		//Render to display
 		//Render to the screen, to render to the screen. Use 0 as the second parameter of glBindFramebuffer
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClearColor(0.01f, 0.01f, 0.01f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		//glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
