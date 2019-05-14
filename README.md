@@ -5,3 +5,11 @@
 
 ## + Shading
 ![image](https://user-images.githubusercontent.com/50461188/57693261-6c772480-7666-11e9-931c-1bc76324c99c.png)
+
+## Usage
+Press 1 -> Transfer Function Only  
+Press 2 -> Shading Enabled  
+Esc -> Quit  
+
+Mouse Click and Drag -> Rotate View  
+Mouse Scroll Wheel -> Zoom In/Out  
