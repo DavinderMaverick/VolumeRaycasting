@@ -21,7 +21,7 @@ Mouse Scroll Wheel -> Zoom In/Out
 4. glm  
 5. stb  
 
-## Using Different Volume Data Steps
+## Using Different Volume Data
 
 1. Delete the gradients.bin file.
 
