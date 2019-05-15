@@ -30,6 +30,6 @@ https://github.com/DavinderMaverick/VolumeRaycasting/blob/14263af291a422a6abf03c
 
 3. These will be the list of transfer control points that we will setup and interpolate to produce the transfer function.
 
-You need to specify at least two control points at isovalues 0 and 256 for both alpha and color. Also the control points need to be ordered (low to high) by the isovalue. So the first entry in the list should always be the RGB/alpha value for the zero isovalue, and the last entry should always be the RGB/alpha value for the 256 isovalue.
+    You need to specify at least two control points at isovalues 0 and 256 for both alpha and color. Also the control points need to be ordered (low to high) by the isovalue. So the first entry in the list should always be the RGB/alpha value for the zero isovalue, and the last entry should always be the RGB/alpha value for the 256 isovalue.
 
-https://github.com/DavinderMaverick/VolumeRaycasting/blob/14263af291a422a6abf03c8f9dd5a3b362b9f9ee/main.cpp#L154-L169
+    https://github.com/DavinderMaverick/VolumeRaycasting/blob/14263af291a422a6abf03c8f9dd5a3b362b9f9ee/main.cpp#L154-L169
